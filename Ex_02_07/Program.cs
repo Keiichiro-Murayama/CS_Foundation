@@ -19,6 +19,5 @@ class Program
         {
             System.Console.WriteLine("0です。");
         }
-
     }
 }
