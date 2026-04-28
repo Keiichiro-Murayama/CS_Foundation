@@ -6,20 +6,16 @@ static class Program
 {
     static void Main(string[] args)
     {
-        PrintHello();
-
-        int answer = Add(4,5);
-        Console.WriteLine(answer);
-    }
-
-    static void PrintHello()
-    {
-        Console.WriteLine("Hello, World!");
-    }
-
-    static int Add(int x,int y)
-    {
-        return x + y;
+        // インスタンスの生成
+        Warrior warrior = new();
+        // フィールドに値を設定する
+        warrior.name = "ユータ";
+        warrior.dp = 3;
+        // フィールドの値を取得する
+        string name = warrior.name;
+        Console.WriteLine($"{name}のHP：{warrior.hp}");
+        Console.WriteLine($"{name}の攻撃力：{warrior.ap}");
+        Console.WriteLine($"{name}の防御力：{warrior.dp}");
     }
 }
 
