@@ -24,9 +24,5 @@ static class Program
         string newprice = Console.ReadLine();
         item.ChangePrice(newprice);
         item.Print();
-        
-
-
-
     }
 }
