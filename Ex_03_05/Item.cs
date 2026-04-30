@@ -1,6 +1,6 @@
 using System.Diagnostics.Contracts;
 
-namespace Ex_03_04;
+namespace Ex_03_05;
 
 // <summary>
 //商品情報を表すクラス 
@@ -14,6 +14,13 @@ public class  Item
 
     public double salesTaxRate = 0.10; //消費税率
 
+    public Item (int pitemNo, string pitemName, int pprice)
+    {
+        this.itemNo = pitemNo;
+        this.itemName = pitemName;
+        this.price = pprice;
+    }
+
     //商品情報の出力
     public void Print()
     {
@@ -21,18 +28,6 @@ public class  Item
         System.Console.WriteLine($"商品番号 = {itemNo}");
         System.Console.WriteLine($"商品名 = {itemName}");
         System.Console.WriteLine($"価格 = {price}");
-    }
-
-    //価格変更メソッド
-    public void ChangePrice(int newPrice)
-    {
-        price = newPrice;   
-    }
-
-    //税込金額の計算メソッド
-    public int CalculateTaxAmount()
-    {
-        return (int)(price*(1+salesTaxRate));
     }
 
 }
