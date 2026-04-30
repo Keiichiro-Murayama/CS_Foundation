@@ -12,8 +12,7 @@ public class  Item
     public string itemName; //商品名
     public int price; //単価
 
-    public double salesTaxRate = 0.10; //消費税率
-
+    // コンストラクタ
     public Item (int pitemNo, string pitemName, int pprice)
     {
         this.itemNo = pitemNo;
