@@ -16,7 +16,7 @@ static class Program
         System.Console.Write("価格を入力して下さい->");
         int price = int.Parse(Console.ReadLine());
         
-        var item = new Item(itemNo, itemName, price);
+        var item = new Item(pitemNo:itemNo, pitemName:itemName, pprice:price);
         item.Print();
     }
 }
