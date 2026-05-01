@@ -6,8 +6,7 @@ public class Account
     public string? AccountName { get; set; }
     public int Balance { get; set; }
 
-    public Account(
-        string AccountNo, string AccountName, int Balance)
+    public Account(string AccountNo, string AccountName, int Balance)
     {
         this.AccountNo = AccountNo;
         this.AccountName = AccountName;
@@ -20,7 +19,6 @@ public class Account
         System.Console.WriteLine($"口座名義:{AccountName}");
         System.Console.WriteLine($"残高:{Balance}");
     }
-
     public override string ToString()
     {
         return $"Account[AccountNo={AccountNo},AccountName={AccountName},Balance ={Balance}]";    

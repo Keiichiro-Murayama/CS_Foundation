@@ -23,6 +23,6 @@ public class NetAccount : Account
     
         public override string ToString()
     {
-        return $"NetAccount[Account[AccountNo={AccountNo},AccountName={AccountName},Balance ={Balance}],Point={Point}]";    
+        return $"NetAccount[{base.ToString()},Point={Point}]";    
     }
 }
