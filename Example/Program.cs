@@ -1,23 +1,60 @@
-﻿string s1 = new string("B");
-string s2 = "ABC";
-string s3 = "DEFG";
-double d = 0.5;
+﻿using System.Collections.Generic; 
+using System.Runtime.CompilerServices;
 
-Console.WriteLine($"s1:{s1}");
-Console.WriteLine($"s2:{s2}");
-Console.WriteLine($"s3:{s3}");
-Console.WriteLine($"d:{d}");
-Console.WriteLine();
-Console.WriteLine($"s1.Length:{s1.Length}");
-Console.WriteLine($"s2.Length:{s2.Length}");
-Console.WriteLine();
-Console.WriteLine($"s1.CompareTo(s2):{s1.CompareTo(s2)}");
-Console.WriteLine($"s2.CompareTo(s3):{s2.CompareTo(s3)}");
-Console.WriteLine();
-string[] ss = s2.Split(s1);
-foreach(string s in ss)
+namespace Example;
+
+/// <summary>
+/// 
+/// </summary>
+static class Program
 {
-    Console.WriteLine($"s2.Split(s1){s}");
+    static void Main(string[] args)
+    {
+        List<int> intList = new List<int>();
+        intList.Add(6);
+        intList.Add(3);
+        intList.Add(5);
+        intList.Add(7);
+
+        Console.WriteLine($"intList[2]:{intList[2]}");
+        intList[2] = 10;
+        Console.WriteLine($"intList[2]:{intList[2]}");
+
+        Console.Write("一覧表示:");
+        ShowList(intList);
+
+        Console.WriteLine($"intList.Count:{intList.Count}");
+        Console.WriteLine($"intList.Contains(5):{intList.Contains(5)}");
+        Console.WriteLine($"intList.Contains(9):{intList.Contains(9)}");
+
+        intList.Insert(1,2);
+        Console.WriteLine("intList.Insert(1,2):");
+        Console.Write("一覧表示:");
+        ShowList(intList);
+
+        intList.Remove(3);
+        Console.WriteLine("intList.Remove(3):");
+        Console.Write("一覧表示:");
+        ShowList(intList);
+
+        intList.Sort();
+        Console.WriteLine("intList.Sort():");
+        Console.Write("一覧表示:");
+        ShowList(intList);
+
+        intList.Clear();
+        Console.WriteLine("intList.Clear():");
+        Console.Write("一覧表示:");
+        ShowList(intList);
+
+        void ShowList(List<int> intList)
+        {
+            foreach (int i in intList)
+            {
+                Console.Write(i);
+            }   
+            Console.WriteLine();
+        }
+    }
 }
-Console.WriteLine();
-Console.WriteLine($"string.Format(\"{{0:P}}\", d)}}:{string.Format("{0:P}", d)}");
+
