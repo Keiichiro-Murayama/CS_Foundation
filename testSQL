@@ -1,0 +1,147 @@
+-- ============================================================
+-- ① データベース作成
+-- ============================================================
+CREATE DATABASE library_db
+WITH
+OWNER = postgres
+ENCODING = 'UTF8'
+CONNECTION LIMIT = -1;
+
+-- 作成後は library_db に接続して実行すること
+
+
+-- ============================================================
+-- ② テーブル作成
+-- ============================================================
+
+-- category
+CREATE TABLE category (
+  id SERIAL NOT NULL,
+  category_uuid VARCHAR(36) NOT NULL,
+  name VARCHAR(20) NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  CONSTRAINT pk_category PRIMARY KEY (id),
+  CONSTRAINT uk_category_uuid UNIQUE (category_uuid)
+);
+
+-- book
+CREATE TABLE book (
+  id SERIAL NOT NULL,
+  book_uuid VARCHAR(36) NOT NULL,
+  title VARCHAR(50) NOT NULL,
+  author VARCHAR(30) NOT NULL,
+  category_id INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  CONSTRAINT pk_book PRIMARY KEY (id),
+  CONSTRAINT uk_book_uuid UNIQUE (book_uuid),
+  CONSTRAINT fk_book_category
+    FOREIGN KEY (category_id) REFERENCES category(id)
+);
+
+-- book_stock
+CREATE TABLE book_stock (
+  id SERIAL NOT NULL,
+  stock_uuid VARCHAR(36) NOT NULL,
+  stock INTEGER NOT NULL,
+  book_id INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  CONSTRAINT pk_book_stock PRIMARY KEY (id),
+  CONSTRAINT uk_book_stock_uuid UNIQUE (stock_uuid),
+  CONSTRAINT uk_book_stock_book UNIQUE (book_id),
+  CONSTRAINT fk_book_stock_book
+    FOREIGN KEY (book_id) REFERENCES book(id),
+  CONSTRAINT chk_stock_non_negative CHECK (stock >= 0)
+);
+
+-- users
+CREATE TABLE users (
+  id SERIAL NOT NULL,
+  user_uuid VARCHAR(36) NOT NULL,
+  username VARCHAR(30) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL,
+  CONSTRAINT pk_users PRIMARY KEY (id),
+  CONSTRAINT uk_users_uuid UNIQUE (user_uuid),
+  CONSTRAINT uk_users_username UNIQUE (username)
+);
+
+
+-- ============================================================
+-- ③ 初期データ(category)
+-- ============================================================
+INSERT INTO category (category_uuid, name, created_at, updated_at) VALUES
+('18836923-5194-47f1-bf4c-e09eb5fa8fef', '技術書', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('1c7dc46b-5618-4d9b-ad4a-0a805e7032d6', '小説', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('e269c98c-61b7-4ca7-9fae-ecd74234989e', '児童書', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('9dd9db1f-14fe-42e5-879d-e1a2c74223d8', 'ビジネス書', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('51e7f90e-5d61-4546-aa42-e85d98fbe542', '漫画', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('d652b797-d71a-4c4c-9539-65049819d942', '雑誌', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+-- ============================================================
+-- ④ テストデータ(book)
+-- ============================================================
+
+-- 技術書
+INSERT INTO book VALUES
+(DEFAULT,'uuid-1','リーダブルコード','Boswell',1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(DEFAULT,'uuid-2','DDD入門','Evans',1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+
+-- 小説
+INSERT INTO book VALUES
+(DEFAULT,'uuid-3','ノルウェイの森','村上春樹',2,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+
+
+-- ============================================================
+-- ⑤ テストデータ(book_stock)
+-- ============================================================
+INSERT INTO book_stock VALUES
+(DEFAULT,'stock-1',5,1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(DEFAULT,'stock-2',3,2,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP),
+(DEFAULT,'stock-3',4,3,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+
+
+-- ============================================================
+-- ⑥ テストデータ(users)
+-- （簡略版：パスワードはダミー）
+-- ============================================================
+INSERT INTO users VALUES
+(DEFAULT,'user-uuid-1','user1','dummy-password',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+
+
+-- ============================================================
+-- ⑦ 確認SQL
+-- ============================================================
+
+-- 件数確認
+SELECT 'category' AS table_name, COUNT(*) FROM category
+UNION ALL
+SELECT 'book', COUNT(*) FROM book
+UNION ALL
+SELECT 'book_stock', COUNT(*) FROM book_stock
+UNION ALL
+SELECT 'users', COUNT(*) FROM users;
+
+-- JOIN確認（超重要）
+SELECT
+  b.title,
+  b.author,
+  c.name AS category,
+  bs.stock
+FROM book b
+JOIN category c ON b.category_id = c.id
+JOIN book_stock bs ON b.id = bs.book_id
+ORDER BY b.id;
+
+
+-- ============================================================
+-- ⑧ リセット用
+-- ============================================================
+TRUNCATE TABLE book_stock RESTART IDENTITY CASCADE;
+TRUNCATE TABLE book RESTART IDENTITY CASCADE;
+TRUNCATE TABLE category RESTART IDENTITY CASCADE;
+TRUNCATE TABLE users RESTART IDENTITY CASCADE;
